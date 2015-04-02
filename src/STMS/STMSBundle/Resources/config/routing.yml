@@ -1,0 +1,3 @@
+stms_homepage:
+    path:     /
+    defaults: { _controller: STMSBundle:Default:index }

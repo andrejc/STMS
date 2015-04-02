@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle;
+namespace STMS\STMSBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppBundle extends Bundle
+class STMSBundle extends Bundle
 {
 }
