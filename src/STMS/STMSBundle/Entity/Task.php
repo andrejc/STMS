@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Task
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="STMS\STMSBundle\Entity\TaskRepository")
  */
 class Task
 {
@@ -36,16 +36,16 @@ class Task
     private $date;
 
     /**
-     * @var float
+     * @var integer
      *
-     * @ORM\Column(name="hours", type="float")
+     * @ORM\Column(name="minutes", type="integer")
      */
-    private $hours;
+    private $minutes;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="string", length=2000)
+     * @ORM\Column(name="notes", type="string", length=2000, nullable=true)
      */
     private $notes;
 
@@ -107,26 +107,26 @@ class Task
     }
 
     /**
-     * Set hours
+     * Set minutes
      *
-     * @param float $hours
+     * @param int $minutes
      * @return Task
      */
-    public function setHours($hours)
+    public function setMinutes($minutes)
     {
-        $this->hours = $hours;
+        $this->minutes = $minutes;
 
         return $this;
     }
 
     /**
-     * Get hours
+     * Get minutes
      *
-     * @return float 
+     * @return int
      */
-    public function getHours()
+    public function getMinutes()
     {
-        return $this->hours;
+        return $this->minutes;
     }
 
     /**

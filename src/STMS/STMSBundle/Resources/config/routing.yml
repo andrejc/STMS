@@ -1,3 +1,26 @@
-stms_homepage:
+index:
     path:     /
     defaults: { _controller: STMSBundle:Default:index }
+
+task:
+    path:     /task/list
+    defaults: { _controller: "STMSBundle:Task:list" }
+
+task_show:
+    path:     /task/show/{id}
+    defaults: { _controller: "STMSBundle:Task:show" }
+
+task_add:
+    path:     /task/add
+    defaults: { _controller: "STMSBundle:Task:add" }
+    methods:  POST
+
+task_edit:
+    path:     /task/edit/{id}
+    defaults: { _controller: "STMSBundle:Task:edit" }
+    methods:  [POST, PUT]
+
+task_delete:
+    path:     /task/delete/{id}
+    defaults: { _controller: "STMSBundle:Task:delete" }
+    methods:  [POST, DELETE]
