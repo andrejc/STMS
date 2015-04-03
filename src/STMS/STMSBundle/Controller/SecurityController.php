@@ -45,9 +45,13 @@ class SecurityController extends Controller
             return new JsonResponse(array("result" => "success"));
         }
 
-        return new JsonResponse(array(
-            "result" => "error",
-            "message" => "One or more input values are invalid or missing"));
+        $errorMessages = array();
+
+        foreach($form->getErrors(true) as $error) {
+            $errorMessages[] = $error->getMessage();
+        }
+
+        return new JsonResponse(array("result" => "error", "messages" => $errorMessages));
     }
 
     private function encodePassword(User $user, $password) {

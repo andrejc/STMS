@@ -16,7 +16,7 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('name', 'text')
-            ->add('date', 'date', array('widget' => 'single_text'))
+            ->add('date', 'date', array('widget' => 'single_text', 'invalid_message' => 'Invalid date provided'))
             ->add('minutes', 'integer')
             ->add('notes', 'textarea')
         ;

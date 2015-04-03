@@ -3,6 +3,7 @@
 namespace STMS\STMSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Task
@@ -31,6 +32,7 @@ class Task
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="Task name must be provided")
      */
     private $name;
 
@@ -38,6 +40,8 @@ class Task
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
+     * @Assert\NotBlank(message="Task date must be provided")
+     * @Assert\Date(message="Invalid date provided")
      */
     private $date;
 
@@ -45,6 +49,7 @@ class Task
      * @var integer
      *
      * @ORM\Column(name="minutes", type="integer")
+     * @Assert\NotBlank(message="Task duration must be provided")
      */
     private $minutes;
 

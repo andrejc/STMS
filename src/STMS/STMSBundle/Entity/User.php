@@ -4,6 +4,7 @@ namespace STMS\STMSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -26,6 +27,10 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank(message="Email must be provided")
+     * @Assert\Email(
+     *     message = "Invalid email provided"
+     * )
      */
     private $email;
 
@@ -33,6 +38,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="fullname", type="string", length=255)
+     * @Assert\NotBlank(message="Full name must be provided")
      */
     private $fullname;
 
@@ -40,6 +46,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank(message="Password must be provided")
      */
     private $password;
 

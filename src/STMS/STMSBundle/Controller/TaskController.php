@@ -55,7 +55,7 @@ class TaskController extends Controller
         if (!$task) {
             return new JsonResponse(array(
                 "result" => "error",
-                "message" => "No task found for the given ID"));
+                "messages" => array("No task found for the given ID")));
         }
 
         $normalizer = new GetSetMethodNormalizer();
@@ -65,7 +65,6 @@ class TaskController extends Controller
         }));
 
         $serializer = new Serializer(array($normalizer), array(new JsonEncoder()));
-
         $json = $serializer->serialize($task, 'json');
 
         return new Response($json);
@@ -93,9 +92,16 @@ class TaskController extends Controller
             return new JsonResponse(array("result" => "success"));
         }
 
+        $errorMessages = array();
+
+        foreach($form->getErrors(true) as $error) {
+            $errorMessages[] = $error->getMessage();
+        }
+
         return new JsonResponse(array(
             "result" => "error",
-            "message" => "One or more input values are invalid or missing"));
+            "messages" => $errorMessages)
+        );
     }
 
 
@@ -115,18 +121,25 @@ class TaskController extends Controller
                 "message" => "No task found for the given ID"));
         }
 
-        $editForm = $this->createEditForm($task);
-        $editForm->handleRequest($request);
+        $form = $this->createEditForm($task);
+        $form->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($form->isValid()) {
             $em->flush();
 
             return new JsonResponse(array("result" => "success"));
         }
 
+        $errorMessages = array();
+
+        foreach($form->getErrors(true) as $error) {
+            $errorMessages[] = $error->getMessage();
+        }
+
         return new JsonResponse(array(
-            "result" => "error",
-            "message" => "One or more input values are invalid or missing"));
+                "result" => "error",
+                "messages" => $errorMessages)
+        );
     }
 
     /**
