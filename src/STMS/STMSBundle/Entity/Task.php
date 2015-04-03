@@ -22,6 +22,11 @@ class Task
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Task")
+     */
+    private $user;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -150,5 +155,21 @@ class Task
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 }

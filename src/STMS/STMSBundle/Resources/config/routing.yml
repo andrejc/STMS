@@ -2,6 +2,22 @@ index:
     path:     /
     defaults: { _controller: STMSBundle:Default:index }
 
+register:
+  path: /register
+  defaults: { _controller: STMSBundle:Security:register }
+
+login:
+  path: /login
+  defaults: { _controller: STMSBundle:Security:login }
+
+login_check:
+  path: /login_check
+  defaults: { _controller: STMSBundle:Security:loginCheck }
+
+logout:
+  path: /logout
+  defaults: { _controller: STMSBundle:Security:logout }
+
 task:
     path:     /task/list
     defaults: { _controller: "STMSBundle:Task:list" }
