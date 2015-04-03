@@ -3,6 +3,7 @@
 namespace STMS\STMSBundle\Controller;
 
 use STMS\STMSBundle\Entity\User;
+use STMS\STMSBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +27,9 @@ class SecurityController extends Controller
     }
 
     public function registerAction(Request $request) {
-        $form = $this->createFormBuilder(null, array('csrf_protection' => false))
-            ->add('email', 'text')
-            ->add('fullname', 'text')
-            ->add('password', 'password')
-            ->getForm();
+        $user = new User();
+
+        $form = $this->createForm(new UserType(), $user);
 
         $form->handleRequest($request);
 
@@ -38,10 +37,7 @@ class SecurityController extends Controller
             $data = $form->getData();
             $em = $this->getDoctrine()->getManager();
 
-            $user = new User();
-            $user->setEmail($data['email']);
-            $user->setFullname($data['fullname']);
-            $user->setPassword($this->encodePassword($user, $data['password']));
+            $user->setPassword($this->encodePassword($user, $user->getPassword()));
 
             $em->persist($user);
             $em->flush();
