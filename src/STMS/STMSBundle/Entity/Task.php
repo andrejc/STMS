@@ -22,7 +22,8 @@ class Task
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Task")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
