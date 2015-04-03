@@ -5,12 +5,15 @@ namespace STMS\STMSBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@UniqueConstraint(name="email_unique",columns={"email"})})
  * @ORM\Entity(repositoryClass="STMS\STMSBundle\Entity\UserRepository")
+ * @UniqueEntity(fields="email", message="The provided email address is already associated with another account")
  */
 class User implements UserInterface
 {
