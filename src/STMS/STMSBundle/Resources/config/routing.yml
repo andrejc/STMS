@@ -18,7 +18,13 @@ logout:
   path: /logout
   defaults: { _controller: STMSBundle:Security:logout }
 
-task:
+set_hours:
+  path: setPreferredHours/{hours}
+  defaults: { _controller: STMSBundle:Settings:setPreferredHours }
+  requirements:
+      hours: \d+
+
+task_list:
     path:     /task/list
     defaults: { _controller: "STMSBundle:Task:list" }
 
