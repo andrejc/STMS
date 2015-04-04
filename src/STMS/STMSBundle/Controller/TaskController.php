@@ -26,11 +26,13 @@ class TaskController extends Controller
      */
     public function listAction()
     {
+        $user = $this->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $tasks = $em->getRepository('STMSBundle:Task')->findAll();
+
+        $tasks = $em->getRepository('STMSBundle:Task')->findBy(array('user' => $user));
 
         $normalizer = new GetSetMethodNormalizer();
-
+        $normalizer->setIgnoredAttributes(array('user'));
         $normalizer->setCallbacks(array('date' => function ($dateTime) {
             return $dateTime->format("Y-m-d");
         }));

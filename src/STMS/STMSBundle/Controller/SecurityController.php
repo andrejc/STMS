@@ -6,24 +6,26 @@ use STMS\STMSBundle\Entity\User;
 use STMS\STMSBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SecurityController extends Controller
 {
     public function loginAction(Request $request) {
-        $session = $request->getSession();
 
-        $error = $session->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-        $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
+        /**
+         * Redirect authenticated users to the homepage
+         */
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return new RedirectResponse($this->generateUrl('index'));
+        }
 
-        return $this->render(
-            'STMSBundle:Security:login.html.twig',
-            array(
-                'last_username' => $session->get(SecurityContextInterface::LAST_USERNAME),
-                'error'         => $error,
-            )
-        );
+        /**
+         * Display login and sign-up forms
+         */
+        return $this->render('STMSBundle:Security:login.html.twig');
     }
 
     public function registerAction(Request $request) {
