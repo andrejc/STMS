@@ -1,1 +1,19 @@
-Homepage
+<!doctype html>
+<html lang="en" ng-app="stms">
+<head>
+    <script src="{{ asset('bundles/stms/lib/angular/angular.min.js') }}"></script>
+    <script src="{{ asset('bundles/stms/js/app.js') }}"></script>
+</head>
+<body ng-controller="STMSController as stms">
+<table>
+    <th>Task</th>
+    <th>Date</th>
+    <th>Duration</th>
+    <tr ng-repeat="task in tasks">
+        <td>{[ task.name ]}</td>
+        <td>{[ task.date | date ]}</td>
+        <td>{[ task.minutes ]}</td>
+    </tr>
+</table>
+</body>
+</html>
