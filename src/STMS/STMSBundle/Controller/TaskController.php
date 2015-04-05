@@ -91,7 +91,7 @@ class TaskController extends Controller
             $em->persist($task);
             $em->flush();
 
-            return new JsonResponse(array("result" => "success"));
+            return new JsonResponse(array("result" => "success", "taskId" => $task->getId()));
         }
 
         $errorMessages = array();

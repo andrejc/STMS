@@ -1,0 +1,8 @@
+.modal-dialog {
+    width: 500px;
+}
+
+.new-task-field {
+    width: 60%;
+    margin: 5px;
+}
