@@ -18,11 +18,14 @@ logout:
   path: /logout
   defaults: { _controller: STMSBundle:Security:logout }
 
+get_user:
+  path: /user/getData
+  defaults: { _controller: STMSBundle:Security:userData }
+
 set_hours:
-  path: setPreferredHours/{hours}
+  path: /user/setPreferredHours/{hours}
   defaults: { _controller: STMSBundle:Settings:setPreferredHours }
-  requirements:
-      hours: \d+
+  methods:  [POST, PUT]
 
 task_list:
     path:     /task/list

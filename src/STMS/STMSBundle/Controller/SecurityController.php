@@ -8,7 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class SecurityController extends Controller
 {
@@ -54,6 +58,19 @@ class SecurityController extends Controller
         }
 
         return new JsonResponse(array("result" => "error", "messages" => $errorMessages));
+    }
+
+    public function userDataAction() {
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $normalizer = new GetSetMethodNormalizer();
+        $normalizer->setIgnoredAttributes(array('password', 'roles', 'salt'));
+
+        $serializer = new Serializer(array($normalizer), array(new JsonEncoder()));
+
+        $json = $serializer->serialize($user, 'json');
+
+        return new Response($json);
     }
 
     private function encodePassword(User $user, $password) {

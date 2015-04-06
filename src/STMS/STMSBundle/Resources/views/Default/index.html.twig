@@ -4,42 +4,69 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href={{ asset('bundles/stms/css/stms.css') }}>
     <script src="{{ asset('bundles/stms/lib/angular/angular.min.js') }}"></script>
+    <script src="{{ asset('bundles/stms/lib/angular/angular-filter.min.js') }}"></script>
     <script src="{{ asset('bundles/stms/lib/angular/ui-bootstrap-tpls-0.12.1.min.js') }}"></script>
     <script src="{{ asset('bundles/stms/js/app.js') }}"></script>
 </head>
 <body ng-controller="STMSController as stms">
 
-<script type="text/ng-template" id="addDialogContent.html">
+<script type="text/ng-template" id="taskDialogContent.html">
     <div class="modal-header">
-        <h3 class="modal-title">Add new task</h3>
+        <h3 class="modal-title">{[ requestType == 'add' ? 'Add new task' : 'Edit task' ]}</h3>
     </div>
 
     <form name="task_form">
-        <input ng-model="newTask.name" class="form-control new-task-field" type="text" placeholder="Task name" title="Task name" />
-        <input ng-model="newTask.date" class="form-control new-task-field" type="date" title="Date" />
-        <input ng-model="newTask.minutes" class="form-control new-task-field" type="number" placeholder="Task duration (in minutes)" title="Task duration" />
-        <input ng-model="newTask.notes" class="form-control new-task-field" type="textarea" rows="3" placeholder="Notes" title="Notes" />
+        <input ng-model="curTask.name" class="form-control task-field" type="text" placeholder="Task name" title="Task name" />
+        <input ng-model="curTask.date" class="form-control task-field" type="date" title="Date" />
+        <input ng-model="curTask.minutes" class="form-control task-field" type="number" placeholder="Task duration (in minutes)" title="Task duration" />
+        <input ng-model="curTask.notes" class="form-control task-field" type="textarea" rows="3" placeholder="Notes" title="Notes" />
     </form>
 
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="submitTask()">Add</button>
+        <button class="btn btn-primary" ng-click="submitTask()">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
         <button class="btn btn-warning" ng-click="cancelTask()">Cancel</button>
     </div>
 </script>
 
-<table>
-    <th>Task</th>
+<script type="text/ng-template" id="settingsDialogContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">User settings</h3>
+    </div>
+
+    <form name="settings_form">
+        <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="text" placeholder="Preferred working hours" title="Preferred working hours" />
+    </form>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="submitSettings()">Submit</button>
+        <button class="btn btn-warning" ng-click="cancelSettings()">Cancel</button>
+    </div>
+</script>
+
+<table class="table">
     <th>Date</th>
-    <th>Duration</th>
-    <tr ng-repeat="task in tasks">
-        <td>{[ task.name ]}</td>
-        <td>{[ task.date | date ]}</td>
-        <td>{[ task.minutes ]}</td>
-        <td><a href="#" ng-click="deleteTask(task)">Delete</a></td>
+    <th>Number of tasks</th>
+    <th>Total duration</th>
+    <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'">
+        <td>{[ key ]}</td>
+        <td>{[ value.length ]}</td>
+        <td>{[ value | totalDuration ]}</td>
+    </tr>
+
+    <tr ng-repeat-end>
+        <td colspan="3">
+            <ul ng-repeat="task in value">
+                <li>{[ task.name ]} ({[ task.minutes ]} minutes)
+                <a href="#" ng-click="displayEditDialog(task)">Edit</a>
+                <a href="#" ng-click="deleteTask(task)">Delete</a>
+                </li>
+            </ul>
+        </td>
     </tr>
 </table>
 
 <button class="btn btn-default" ng-click="displayAddDialog()">Add Task</button>
+<button class="btn btn-default" ng-click="displaySettingsDialog(user)">Settings</button>
 
 </body>
 </html>
