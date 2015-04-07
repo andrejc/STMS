@@ -3,7 +3,7 @@
         $interpolateProvider.startSymbol('{[').endSymbol(']}');
     });
 
-    app.controller('STMSController', function($scope, $http, $modal, $filter) {
+    app.controller('STMSController', function($scope, $http, $modal, $window) {
         $scope.user = {};
         $scope.tasks = {};
 
@@ -22,47 +22,30 @@
                 console.log('Error: ' + data);
             });
 
-        function transformResponse(data) {
-            var tasks = angular.fromJson(data);
-
-            angular.forEach(tasks, function(task) {
-                task.date = new Date(task.date);
-            });
-
-            return tasks;
-        }
-
-        $scope.displayAddDialog = function () {
+        $scope.displayTaskDialog = function (task) {
             var dialogInstance = $modal.open({
                 templateUrl: 'taskDialogContent.html',
                 controller: 'AddOrEditDialogController',
                 size: 'sm',
                 resolve: {
                     task: function () {
-                        return null;
+                        if(task == null) {
+                            return null;
+                        }
+                        else {
+                            return angular.copy(task);
+                        }
                     }
                 }
             });
 
             dialogInstance.result.then(function (newTask) {
-                $scope.tasks.push(newTask);
-            });
-        };
-
-        $scope.displayEditDialog = function (task) {
-            var dialogInstance = $modal.open({
-                templateUrl: 'taskDialogContent.html',
-                controller: 'AddOrEditDialogController',
-                size: 'sm',
-                resolve: {
-                    task: function () {
-                        return angular.copy(task);
-                    }
+                if(task == null) {
+                    $scope.tasks.push(newTask);
                 }
-            });
-
-            dialogInstance.result.then(function (updatedTask) {
-                angular.copy(updatedTask, task);
+                else {
+                    angular.copy(newTask, task);
+                }
             });
         };
 
@@ -94,6 +77,73 @@
                     }
                 });
         };
+
+        $scope.logout = function() {
+            $http.get('/app_dev.php/logout')
+                .success(function() {
+                    $window.location.href = "app_dev.php/login";
+                });
+        };
+
+        function transformResponse(data) {
+            var tasks = angular.fromJson(data);
+
+            angular.forEach(tasks, function(task) {
+                task.date = new Date(task.date);
+            });
+
+            return tasks;
+        }
+    });
+
+    app.controller('LoginController', function($scope, $http, $window) {
+        $scope.curUser = {};
+        $scope.newUser = {};
+
+        $scope.login = function (user) {
+            $http({
+                method: 'POST',
+                url: '/app_dev.php/login_check',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: user,
+                transformRequest: transformRequest
+            }).success(function (data) {
+                if(data.result == "success") {
+                    $window.location.href = "/app_dev.php";
+                }
+                else {
+                    // TODO: Display error
+                }
+            });
+        };
+
+        $scope.register = function (user) {
+            $http({
+                method: 'POST',
+                url: '/app_dev.php/register',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: user,
+                transformRequest: transformRequest
+            }).success(function (data) {
+                if(data.result == "success") {
+                    $scope.login(user);
+                }
+                else {
+                    // TODO: Display error
+                }
+            });
+        };
+
+        function transformRequest(user) {
+            var request = [];
+            for(var val in user) {
+                var value = user[val];
+
+                request.push(encodeURIComponent(val) + "=" + encodeURIComponent(value));
+            }
+
+            return request.join("&");
+        }
     });
 
     app.controller('AddOrEditDialogController', function($scope, $http, $modalInstance, $filter, task) {
@@ -113,7 +163,7 @@
                 url: $scope.requestType == 'add' ? '/app_dev.php/task/add' : '/app_dev.php/task/edit/' + task.id,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: $scope.curTask,
-                transformRequest: transformRequest
+                transformRequest: transformTaskRequest
             }).success(function (data) {
                 if(data.result == "success") {
                     if($scope.requestType == 'add') {
@@ -132,7 +182,7 @@
             $modalInstance.dismiss();
         };
 
-        function transformRequest(task) {
+        function transformTaskRequest(task) {
             var request = [];
             for(var val in task) {
                 var value = task[val];

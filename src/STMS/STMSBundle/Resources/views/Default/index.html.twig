@@ -2,6 +2,7 @@
 <html lang="en" ng-app="stms">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href={{ asset('bundles/stms/css/stms.css') }}>
     <script src="{{ asset('bundles/stms/lib/angular/angular.min.js') }}"></script>
     <script src="{{ asset('bundles/stms/lib/angular/angular-filter.min.js') }}"></script>
@@ -15,11 +16,23 @@
         <h3 class="modal-title">{[ requestType == 'add' ? 'Add new task' : 'Edit task' ]}</h3>
     </div>
 
-    <form name="task_form">
-        <input ng-model="curTask.name" class="form-control task-field" type="text" placeholder="Task name" title="Task name" />
-        <input ng-model="curTask.date" class="form-control task-field" type="date" title="Date" />
-        <input ng-model="curTask.minutes" class="form-control task-field" type="number" placeholder="Task duration (in minutes)" title="Task duration" />
-        <input ng-model="curTask.notes" class="form-control task-field" type="textarea" rows="3" placeholder="Notes" title="Notes" />
+    <form name="task_form" class="task-form">
+        <div class="form-group">
+            <label class="control-label">Task name:</label>
+            <input ng-model="curTask.name" class="form-control task-field" type="text" placeholder="A short title for the task" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Date:</label>
+            <input ng-model="curTask.date" class="form-control task-field" type="date" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Duration:</label>
+            <input ng-model="curTask.minutes" class="form-control task-field" type="number" placeholder="Task duration (in minutes)" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Notes:</label>
+            <textarea ng-model="curTask.notes" class="form-control task-field" rows="4" placeholder="Additional notes (optional)"></textarea>
+        </div>
     </form>
 
     <div class="modal-footer">
@@ -33,8 +46,11 @@
         <h3 class="modal-title">User settings</h3>
     </div>
 
-    <form name="settings_form">
-        <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="text" placeholder="Preferred working hours" title="Preferred working hours" />
+    <form name="settings_form" class="settings-form">
+        <div class="form-group">
+            <label class="control-label">Daily hours:</label>
+            <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="text" placeholder="Preferred number working hours per day"  />
+        </div>
     </form>
 
     <div class="modal-footer">
@@ -43,30 +59,41 @@
     </div>
 </script>
 
-<table class="table">
-    <th>Date</th>
-    <th>Number of tasks</th>
-    <th>Total duration</th>
-    <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'">
-        <td>{[ key ]}</td>
-        <td>{[ value.length ]}</td>
-        <td>{[ value | totalDuration ]}</td>
-    </tr>
+<div class="container head-container">
+    <div class="title">
+        <h2>Time Management System</h2>
+    </div>
+    <div class="user-account">
+        Logged in as: {[ user.fullname ]}
+        <button class="btn btn-default" ng-click="displaySettingsDialog(user)">Settings</button>
+        <button class="btn btn-default" ng-click="logout()">Logout</button>
+    </div>
+</div>
 
-    <tr ng-repeat-end>
-        <td colspan="3">
-            <ul ng-repeat="task in value">
-                <li>{[ task.name ]} ({[ task.minutes ]} minutes)
-                <a href="#" ng-click="displayEditDialog(task)">Edit</a>
-                <a href="#" ng-click="deleteTask(task)">Delete</a>
-                </li>
-            </ul>
-        </td>
-    </tr>
-</table>
+<div class="container main-container">
+    <button class="btn btn-default" ng-click="displayTaskDialog()">New Task</button>
+    <table class="table task-table">
+        <th>Date</th>
+        <th>Number of tasks</th>
+        <th>Total duration</th>
+        <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'">
+            <td>{[ key ]}</td>
+            <td>{[ value.length ]}</td>
+            <td>{[ value | totalDuration ]}</td>
+        </tr>
 
-<button class="btn btn-default" ng-click="displayAddDialog()">Add Task</button>
-<button class="btn btn-default" ng-click="displaySettingsDialog(user)">Settings</button>
-
+        <tr ng-repeat-end>
+            <td colspan="3" class="task-list">
+                <ul class="list-group fa-ul">
+                    <li ng-repeat="task in value" class="list-group-item">{[ task.name ]} ({[ task.minutes ]} minutes)
+                        <i class="fa-li fa fa-caret-right"></i>
+                        <a href="#" ng-click="displayTaskDialog(task)">Edit</a>
+                        <a href="#" ng-click="deleteTask(task)">Delete</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

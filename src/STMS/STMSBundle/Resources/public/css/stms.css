@@ -1,8 +1,102 @@
+.container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #95d4cc;
+    border-radius: 10px;
+}
+
+.main-container {
+    margin-top: 40px;
+    padding: 40px;
+}
+
+.head-container {
+    margin-top: 60px;
+    padding: 0px 20px 5px 50px;
+    border-color: #95d4cc;
+}
+
+.head-container .title {
+    float: left;
+}
+
+.head-container .user-account {
+    float: right;
+    font-size: 16px;
+    margin-top: 19px;
+}
+
+.head-container .btn {
+    margin-left: 10px;
+}
+
+
 .modal-dialog {
     width: 500px;
+}
+
+.task-form, .settings-form {
+    margin: 20px;
 }
 
 .task-field {
     width: 75%;
     margin: 5px;
+    resize: none;
+}
+
+td,th {
+    text-align: center;
+    border-color: #ccc !important;
+}
+
+td:first-child, th:first-child {
+    text-align: left;
+}
+
+.task-table {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    font-size: 18px;
+}
+
+.task-list {
+    text-align: left;
+    padding-left: 5% !important;
+    border: none !important;
+}
+
+.list-group {
+    margin-bottom: 5px;
+}
+
+.list-group-item {
+    padding: 5px 15px;
+    font-size: 16px;
+}
+
+.fa-li {
+    color: #95d4cc;
+    font-size: 20px;
+}
+
+.login-left-container {
+    float: left;
+    width: 45%;
+}
+
+.login-right-container {
+    float: right;
+    width: 50%;
+    border-left: 1px solid #95d4cc;
+    padding-left: 5%;
+}
+
+.login-button {
+    float: right;
+    margin-right: 5%;
+    width: 135px;
 }

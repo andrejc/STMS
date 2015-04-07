@@ -16,6 +16,8 @@ security:
             form_login:
                 check_path: login_check
                 login_path: login
+                username_parameter: email
+                password_parameter: password
                 success_handler: authentication_handler
                 failure_handler: authentication_handler
             logout:

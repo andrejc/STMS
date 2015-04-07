@@ -1,9 +1,54 @@
-<form action="{{ path('login_check') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username"/>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
 
-    <button type="submit">login</button>
-</form>
+<!doctype html>
+<html lang="en" ng-app="stms">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href={{ asset('bundles/stms/css/stms.css') }}>
+    <script src="{{ asset('bundles/stms/lib/angular/angular.min.js') }}"></script>
+    <script src="{{ asset('bundles/stms/lib/angular/angular-filter.min.js') }}"></script>
+    <script src="{{ asset('bundles/stms/lib/angular/ui-bootstrap-tpls-0.12.1.min.js') }}"></script>
+    <script src="{{ asset('bundles/stms/js/app.js') }}"></script>
+</head>
+<body ng-controller="LoginController as stms">
+
+<div class="container main-container">
+    <div class="login-left-container">
+        <h3>Sign in</h3>
+        <form name="settings_form" class="settings-form">
+            <div class="form-group">
+                <label class="control-label">E-mail:</label>
+                <input ng-model="curUser.email" class="form-control" type="text" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password:</label>
+                <input ng-model="curUser.password" class="form-control" type="password" />
+            </div>
+        </form>
+
+        <button class="btn btn-default login-button" ng-click="login(curUser)">Sign in</button>
+    </div>
+    <div class="login-right-container">
+        <h3>Create new account</h3>
+        <form name="settings_form" class="settings-form">
+            <div class="form-group">
+                <label class="control-label">E-mail:</label>
+                <input ng-model="newUser.email" class="form-control" type="text" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Full name:</label>
+                <input ng-model="newUser.fullname" class="form-control" type="text" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Create password:</label>
+                <input ng-model="newUser.password" class="form-control" type="password" />
+            </div>
+        </form>
+
+        <button class="btn btn-default login-button" ng-click="register(newUser)">Register</button>
+    </div>
+
+</div>
+</body>
+</html>
