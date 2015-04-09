@@ -13,7 +13,7 @@
 
 .head-container {
     margin-top: 60px;
-    padding: 0px 20px 5px 50px;
+    padding: 10px 20px 20px 50px;
     border-color: #95d4cc;
 }
 
@@ -31,6 +31,10 @@
     margin-left: 10px;
 }
 
+.export-btn {
+    margin-left: 20px;
+}
+
 
 .modal-dialog {
     width: 500px;
@@ -46,6 +50,16 @@
     resize: none;
 }
 
+.date-field {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+}
+
+.date-label {
+    margin-left: 15px;
+}
+
 td,th {
     text-align: center;
     border-color: #ccc !important;
@@ -53,6 +67,21 @@ td,th {
 
 td:first-child, th:first-child {
     text-align: left;
+}
+
+.table-options {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+}
+
+.table-options-left {
+    float: left;
+}
+
+.table-options-right {
+    float: right;
 }
 
 .task-table {
@@ -63,24 +92,57 @@ td:first-child, th:first-child {
     font-size: 18px;
 }
 
+.task-row-neutral {
+    background-color: #fff;
+}
+
+.task-row-green {
+    background-color: #9af4b0;
+}
+
+.task-row-red {
+    background-color: #FF6666;
+}
+
 .task-list {
     text-align: left;
     padding-left: 5% !important;
     border: none !important;
 }
 
+.task-options {
+    display: inline-block;
+    float: right;
+}
+
+.task-option {
+    margin-right: 15px;
+}
+
+.task-notes {
+    margin: 20px;
+    white-space: pre-line;
+}
+
 .list-group {
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
 .list-group-item {
+    width: 95%;
     padding: 5px 15px;
     font-size: 16px;
+}
+
+.task-duration {
+    color: #777;
 }
 
 .fa-li {
     color: #95d4cc;
     font-size: 20px;
+    margin-top: 2px;
 }
 
 .login-left-container {
@@ -99,4 +161,17 @@ td:first-child, th:first-child {
     float: right;
     margin-right: 5%;
     width: 135px;
+}
+
+.btn-icon {
+    font-size: 20px;
+    vertical-align: middle;
+    color: #777;
+    margin-right: 8px;
+}
+
+.list-icon {
+    font-size: 16px;
+    vertical-align: middle;
+    color: #777;
 }

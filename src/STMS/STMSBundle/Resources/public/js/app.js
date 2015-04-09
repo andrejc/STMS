@@ -3,21 +3,23 @@
         $interpolateProvider.startSymbol('{[').endSymbol(']}');
     });
 
-    app.controller('STMSController', function($scope, $http, $modal, $window) {
+    app.controller('STMSController', function($scope, $http, $modal, $filter, $window) {
         $scope.user = {};
         $scope.tasks = {};
+        $scope.startDate = null;
+        $scope.endDate = null;
 
         $http.get('/app_dev.php/user/getData').success(function (data) {
             $scope.user = data;
         }).error(function (data) {
-                console.log('Error: ' + data);
-            });
+            console.log('Error: ' + data);
+        });
 
         $http.get('/app_dev.php/task/list', {
             transformResponse: transformResponse
         }).success(function (data) {
-                $scope.tasks = data;
-            })
+            $scope.tasks = data;
+        })
             .error(function (data) {
                 console.log('Error: ' + data);
             });
@@ -66,6 +68,19 @@
             });
         };
 
+        $scope.displayNotesDialog = function (task) {
+            $modal.open({
+                templateUrl: 'notesDialogContent.html',
+                controller: 'NotesDialogController',
+                size: 'sm',
+                resolve: {
+                    task: function () {
+                        return task;
+                    }
+                }
+            });
+        };
+
         $scope.deleteTask = function(task) {
             $http.delete('/app_dev.php/task/delete/' + task.id)
                 .success(function(data) {
@@ -83,6 +98,28 @@
                 .success(function() {
                     $window.location.href = "app_dev.php/login";
                 });
+        };
+
+        $scope.isInRange = function(date) {
+            date = new Date(date);
+            date.setHours(0,0,0,0);
+            return ($scope.startDate == null || date >= $scope.startDate)
+                && ($scope.endDate == null || date <= $scope.endDate);
+        };
+
+        $scope.rowClass = function(tasks) {
+            var totalDuration = $filter('totalDuration')(tasks, 'minutes');
+
+            if($scope.user.preferredWorkingHoursPerDay == null) {
+                return 'task-row-neutral';
+            }
+            else if(totalDuration >= $scope.user.preferredWorkingHoursPerDay * 60) {
+                return 'task-row-green';
+            }
+
+            else {
+                return 'task-row-red';
+            }
         };
 
         function transformResponse(data) {
@@ -221,18 +258,30 @@
         };
     });
 
+    app.controller('NotesDialogController', function($scope, $http, $modalInstance, task) {
+        $scope.task = task;
+
+        $scope.dismissNotes = function () {
+            $modalInstance.dismiss();
+        };
+    });
+
     app.filter('totalDuration', function() {
-        return function(tasks) {
+        return function(tasks, format) {
             var totalDuration = 0;
             for (var i = 0; i < tasks.length; i++) {
                 totalDuration += parseInt(tasks[i].minutes);
             };
 
+            if(format == 'minutes') {
+                return totalDuration;
+            }
+
             if(totalDuration < 60) {
                 return totalDuration + " minutes";
             }
             else {
-                var hourString =  totalDuration / 60 > 1 ? " hours" : " hour";
+                var hourString =  totalDuration / 60 > 2 ? " hours" : " hour";
                 var result = Math.floor(totalDuration / 60) + hourString;
 
                 if(totalDuration % 60 != 0) {

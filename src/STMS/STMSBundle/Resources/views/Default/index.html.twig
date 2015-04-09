@@ -48,7 +48,7 @@
 
     <form name="settings_form" class="settings-form">
         <div class="form-group">
-            <label class="control-label">Daily hours:</label>
+            <label class="control-label">Daily working hours:</label>
             <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="text" placeholder="Preferred number working hours per day"  />
         </div>
     </form>
@@ -59,36 +59,69 @@
     </div>
 </script>
 
+<script type="text/ng-template" id="notesDialogContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{[task.name]}</h3>
+    </div>
+
+    <p class="task-notes">
+        {[task.notes]}
+    </p>
+
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="dismissNotes()">Close</button>
+    </div>
+</script>
+
 <div class="container head-container">
     <div class="title">
         <h2>Time Management System</h2>
     </div>
     <div class="user-account">
         Logged in as: {[ user.fullname ]}
-        <button class="btn btn-default" ng-click="displaySettingsDialog(user)">Settings</button>
-        <button class="btn btn-default" ng-click="logout()">Logout</button>
+        <button class="btn btn-default" ng-click="displaySettingsDialog(user)"><i class="fa fa-cogs btn-icon"></i>Settings</button>
+        <button class="btn btn-default" ng-click="logout()"><i class="fa fa-power-off btn-icon"></i>Logout</button>
     </div>
 </div>
 
 <div class="container main-container">
-    <button class="btn btn-default" ng-click="displayTaskDialog()">New Task</button>
+    <div class="table-options">
+        <div class="table-options-left">
+            <button class="btn btn-default" ng-click="displayTaskDialog()"><i class="fa fa-plus-circle btn-icon"></i>New Task</button>
+        </div>
+        <div class="table-options-right">
+            <label class="control-label date-label">Start date:</label>
+            <input ng-model="startDate" class="form-control date-field" type="date" />
+            <label class="control-label date-label">End date:</label>
+            <input ng-model="endDate" class="form-control date-field" type="date" />
+            <button class="btn btn-default export-btn" ng-click="displayTaskDialog()"><i class="fa fa-file-text-o btn-icon"></i>Export to sheet</button>
+        </div>
+    </div>
+
     <table class="table task-table">
         <th>Date</th>
         <th>Number of tasks</th>
         <th>Total duration</th>
-        <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'">
+        <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'" ng-if="isInRange(key)" ng-class="rowClass(value)">
             <td>{[ key ]}</td>
             <td>{[ value.length ]}</td>
             <td>{[ value | totalDuration ]}</td>
         </tr>
 
-        <tr ng-repeat-end>
+        <tr ng-if="isInRange(key)" ng-repeat-end>
             <td colspan="3" class="task-list">
                 <ul class="list-group fa-ul">
-                    <li ng-repeat="task in value" class="list-group-item">{[ task.name ]} ({[ task.minutes ]} minutes)
+                    <li ng-repeat="task in value" ng-if="isInRange(task.date)" class="list-group-item">{[ task.name ]} <span class="task-duration">({[ task.minutes ]} minutes)</span>
                         <i class="fa-li fa fa-caret-right"></i>
-                        <a href="#" ng-click="displayTaskDialog(task)">Edit</a>
-                        <a href="#" ng-click="deleteTask(task)">Delete</a>
+                        <div class="task-options">
+                            <span ng-show="task.notes != null">
+                            <i class="fa fa-paperclip list-icon"></i>
+                            <a class="task-option" href="#" ng-click="displayNotesDialog(task)">View notes</a></span>
+                            <i class="fa fa-pencil list-icon"></i>
+                            <a class="task-option" href="#" ng-click="displayTaskDialog(task)">Edit</a>
+                            <i class="fa fa-trash-o list-icon"></i>
+                            <a class="task-option" href="#" ng-click="deleteTask(task)">Delete</a>
+                        </div>
                     </li>
                 </ul>
             </td>
