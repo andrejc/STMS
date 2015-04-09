@@ -94,7 +94,11 @@
             <input ng-model="startDate" class="form-control date-field" type="date" />
             <label class="control-label date-label">End date:</label>
             <input ng-model="endDate" class="form-control date-field" type="date" />
-            <button class="btn btn-default export-btn" ng-click="displayTaskDialog()"><i class="fa fa-file-text-o btn-icon"></i>Export to sheet</button>
+            <form method="post" class="form-sheet" action="app_dev.php/generateSheet" target="_blank">
+                <input ng-if="startDate != null" type="hidden" name="startDate" value="{[ startDate | date:'yyyy-MM-dd' ]}">
+                <input ng-if="endDate != null" type="hidden" name="endDate" value="{[ endDate | date:'yyyy-MM-dd' ]}">
+                <button type="submit" class="btn btn-default export-btn"><i class="fa fa-file-text-o btn-icon"></i>Export to sheet</button>
+            </form>
         </div>
     </div>
 
