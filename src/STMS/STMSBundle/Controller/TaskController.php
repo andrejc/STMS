@@ -45,6 +45,41 @@ class TaskController extends Controller
     }
 
     /**
+     * Generate HTML sheet with all tasks for the current user that are within given time range
+     */
+
+    /**
+     * Lists all Task entities.
+     *
+     */
+    public function generateSheetAction(Request $request)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $startDate = $postData = $request->request->get('startDate');
+        $endDate = $request->request->get('endDate');
+
+        $tasks = $em->getRepository('STMSBundle:Task')->getTasksWithinDateRange($user, $startDate, $endDate);
+        $groupedTasks = array();
+
+        foreach($tasks as $task) {
+            $date = $task->getDate()->format('Y-m-d');
+
+            $groupedTasks[$date]['tasks'][] = $task;
+
+            if(!isset($groupedTasks[$date]['totalDuration'])) {
+                $groupedTasks[$date]['totalDuration'] = $task->getMinutes();
+            }
+            else {
+                $groupedTasks[$date]['totalDuration'] += $task->getMinutes();
+            }
+        }
+
+        return $this->render('STMSBundle:Default:sheet.html.twig', array('data' => $groupedTasks));
+    }
+
+    /**
      * Finds and displays a Task entity.
      *
      */

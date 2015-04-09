@@ -27,6 +27,10 @@ set_hours:
   defaults: { _controller: STMSBundle:Settings:setPreferredHours }
   methods:  [POST, PUT]
 
+generate_sheet:
+  path: generateSheet
+  defaults: { _controller: "STMSBundle:Task:generateSheet" }
+
 task_list:
     path:     /task/list
     defaults: { _controller: "STMSBundle:Task:list" }

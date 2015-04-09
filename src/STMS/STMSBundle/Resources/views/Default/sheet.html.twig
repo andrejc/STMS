@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href={{ asset('bundles/stms/css/stms.css') }}>
+</head>
+<body>
+<table class="sheet-table" border="1">
+    <th>Date</th>
+    <th>Total duration (minutes)</th>
+    <th>Tasks</th>
+    {% for date in data | keys | sort %}
+        <tr>
+            <td>{{ date | date("d/m/Y") }}</td>
+            <td>{{ data[date]['totalDuration'] }}</td>
+            <td>
+                {% for task in data[date]['tasks'] %}
+                    <p>{{ task.name }}
+
+                        {% if task.notes %}
+                            (Notes: {{ task.notes }})
+                        {% endif %}
+                    </p>
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
