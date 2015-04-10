@@ -28,6 +28,7 @@
         </form>
 
         <button class="btn btn-default login-button" ng-click="login(curUser)">Sign in</button>
+        <i class="fa fa-spinner fa-pulse login-spinner" ng-show="isProcessingLogin"></i>
     </div>
     <div class="login-right-container">
         <h3>Create new account</h3>
@@ -47,6 +48,7 @@
         </form>
 
         <button class="btn btn-default login-button" ng-click="register(newUser)">Register</button>
+        <i class="fa fa-spinner fa-pulse login-spinner" ng-show="isProcessingRegistration"></i>
     </div>
 
 </div>

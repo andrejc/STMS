@@ -100,14 +100,14 @@
                 });
         };
 
-        $scope.isInRange = function(date) {
+        $scope.isDateInRange = function(date) {
             date = new Date(date);
             date.setHours(0,0,0,0);
             return ($scope.startDate == null || date >= $scope.startDate)
                 && ($scope.endDate == null || date <= $scope.endDate);
         };
 
-        $scope.rowClass = function(tasks) {
+        $scope.taskRowClass = function(tasks) {
             var totalDuration = $filter('totalDuration')(tasks, 'minutes');
 
             if($scope.user.preferredWorkingHoursPerDay == null) {
@@ -120,6 +120,10 @@
             else {
                 return 'task-row-red';
             }
+        };
+
+        $scope.minDate = function(tasks) {
+            return $filter('min')($filter('map')(tasks, 'date'));
         };
 
         function transformResponse(data) {
@@ -138,6 +142,8 @@
         $scope.newUser = {};
 
         $scope.login = function (user) {
+            $scope.isProcessingLogin = true;
+
             $http({
                 method: 'POST',
                 url: '/app_dev.php/login_check',
@@ -145,6 +151,8 @@
                 data: user,
                 transformRequest: transformRequest
             }).success(function (data) {
+                $scope.isProcessingLogin = false;
+
                 if(data.result == "success") {
                     $window.location.href = "/app_dev.php";
                 }
@@ -155,6 +163,8 @@
         };
 
         $scope.register = function (user) {
+            $scope.isProcessingRegistration = true;
+
             $http({
                 method: 'POST',
                 url: '/app_dev.php/register',
@@ -162,6 +172,8 @@
                 data: user,
                 transformRequest: transformRequest
             }).success(function (data) {
+                $scope.isProcessingRegistration = false;
+
                 if(data.result == "success") {
                     $scope.login(user);
                 }
@@ -195,6 +207,7 @@
         }
 
         $scope.submitTask = function () {
+            $scope.isProcessing = true;
             $http({
                 method: $scope.requestType == 'add' ? 'POST' : 'PUT',
                 url: $scope.requestType == 'add' ? '/app_dev.php/task/add' : '/app_dev.php/task/edit/' + task.id,
@@ -202,6 +215,8 @@
                 data: $scope.curTask,
                 transformRequest: transformTaskRequest
             }).success(function (data) {
+                $scope.isProcessing = false;
+
                 if(data.result == "success") {
                     if($scope.requestType == 'add') {
                         $scope.curTask.id = data.taskId;
@@ -239,11 +254,13 @@
         $scope.user = user;
 
         $scope.submitSettings = function () {
+            $scope.isProcessing = true;
             $http({
                 method: 'PUT',
                 url: '/app_dev.php/user/setPreferredHours/' + $scope.user.preferredWorkingHoursPerDay,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
+                $scope.isProcessing = false;
                 if(data.result == "success") {
                     $modalInstance.close($scope.user);
                 }

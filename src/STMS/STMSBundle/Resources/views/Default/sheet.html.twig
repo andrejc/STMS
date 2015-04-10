@@ -14,14 +14,16 @@
             <td>{{ date | date("d/m/Y") }}</td>
             <td>{{ data[date]['totalDuration'] }}</td>
             <td>
+                <ul>
                 {% for task in data[date]['tasks'] %}
-                    <p>{{ task.name }}
+                    <li>{{ task.name }}
 
                         {% if task.notes %}
                             (Notes: {{ task.notes }})
                         {% endif %}
-                    </p>
+                    </li>
                 {% endfor %}
+                </ul>
             </td>
         </tr>
     {% endfor %}

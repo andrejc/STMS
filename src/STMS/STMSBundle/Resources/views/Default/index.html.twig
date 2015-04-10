@@ -36,6 +36,7 @@
     </form>
 
     <div class="modal-footer">
+        <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
         <button class="btn btn-primary" ng-click="submitTask()">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
         <button class="btn btn-warning" ng-click="cancelTask()">Cancel</button>
     </div>
@@ -54,6 +55,7 @@
     </form>
 
     <div class="modal-footer">
+        <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
         <button class="btn btn-primary" ng-click="submitSettings()">Submit</button>
         <button class="btn btn-warning" ng-click="cancelSettings()">Cancel</button>
     </div>
@@ -106,16 +108,17 @@
         <th>Date</th>
         <th>Number of tasks</th>
         <th>Total duration</th>
-        <tr ng-repeat-start="(key, value) in tasks | groupBy: 'date | date'" ng-if="isInRange(key)" ng-class="rowClass(value)">
-            <td>{[ key ]}</td>
-            <td>{[ value.length ]}</td>
-            <td>{[ value | totalDuration ]}</td>
+        <tr ng-repeat-start="dateTasks in tasks | groupBy: 'date | date' | toArray:true | orderBy:minDate:true"
+            ng-if="isDateInRange(dateTasks.$key)" ng-class="taskRowClass(dateTasks)">
+            <td>{[ dateTasks.$key ]}</td>
+            <td>{[ dateTasks.length ]}</td>
+            <td>{[ dateTasks | totalDuration ]}</td>
         </tr>
 
-        <tr ng-if="isInRange(key)" ng-repeat-end>
+        <tr ng-if="isDateInRange(dateTasks.$key)" ng-repeat-end>
             <td colspan="3" class="task-list">
                 <ul class="list-group fa-ul">
-                    <li ng-repeat="task in value" ng-if="isInRange(task.date)" class="list-group-item">{[ task.name ]} <span class="task-duration">({[ task.minutes ]} minutes)</span>
+                    <li ng-repeat="task in dateTasks" ng-if="isDateInRange(task.date)" class="list-group-item">{[ task.name ]} <span class="task-duration">({[ task.minutes ]} minutes)</span>
                         <i class="fa-li fa fa-caret-right"></i>
                         <div class="task-options">
                             <span ng-show="task.notes != null">
