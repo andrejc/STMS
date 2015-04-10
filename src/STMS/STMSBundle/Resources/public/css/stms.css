@@ -65,6 +65,12 @@
     margin-left: 15px;
 }
 
+.no-tasks-note {
+    padding: 50px;
+    font-style: italic;
+    font-size: 18px;
+}
+
 .task-table td, .task-table th {
     text-align: center;
     border-color: #ccc !important;

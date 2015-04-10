@@ -104,7 +104,9 @@
         </div>
     </div>
 
-    <table class="table task-table">
+    <div ng-hide="tasks.length" class="no-tasks-note">You haven't added any tasks yet. You can do so by clicking the button above.</div>
+
+    <table ng-show="tasks.length" class="table task-table">
         <th>Date</th>
         <th>Number of tasks</th>
         <th>Total duration</th>
