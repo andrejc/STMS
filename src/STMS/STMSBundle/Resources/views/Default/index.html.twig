@@ -16,30 +16,30 @@
         <h3 class="modal-title">{[ requestType == 'add' ? 'Add new task' : 'Edit task' ]}</h3>
     </div>
 
-    <form name="task_form" class="task-form">
+    <form name="task_form" ng-submit="submitTask()" class="task-form">
         <div class="form-group">
             <label class="control-label">Task name:</label>
-            <input ng-model="curTask.name" class="form-control task-field" type="text" placeholder="A short title for the task" />
+            <input ng-model="curTask.name" class="form-control task-field" type="text" placeholder="A short title for the task" required />
         </div>
         <div class="form-group">
             <label class="control-label">Date:</label>
-            <input ng-model="curTask.date" class="form-control task-field" type="date" />
+            <input ng-model="curTask.date" class="form-control task-field" type="date" required />
         </div>
         <div class="form-group">
             <label class="control-label">Duration:</label>
-            <input ng-model="curTask.minutes" class="form-control task-field" type="number" placeholder="Task duration (in minutes)" />
+            <input ng-model="curTask.minutes" class="form-control task-field" type="number" placeholder="Task duration (in minutes)" required />
         </div>
         <div class="form-group">
             <label class="control-label">Notes:</label>
             <textarea ng-model="curTask.notes" class="form-control task-field" rows="6" placeholder="Additional notes (optional)"></textarea>
         </div>
-    </form>
 
-    <div class="modal-footer">
-        <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
-        <button class="btn btn-primary" ng-click="submitTask()">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
-        <button class="btn btn-warning" ng-click="cancelTask()">Cancel</button>
-    </div>
+        <div class="modal-footer">
+            <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
+            <button type="submit" class="btn btn-primary">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
+            <button class="btn btn-warning" ng-click="cancelTask()">Cancel</button>
+        </div>
+    </form>
 </script>
 
 <script type="text/ng-template" id="settingsDialogContent.html">
@@ -47,18 +47,18 @@
         <h3 class="modal-title">User settings</h3>
     </div>
 
-    <form name="settings_form" class="settings-form">
+    <form name="settings_form" ng-submit="submitSettings()" class="settings-form">
         <div class="form-group">
             <label class="control-label">Daily working hours:</label>
-            <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="text" placeholder="Preferred number working hours per day"  />
+            <input ng-model="user.preferredWorkingHoursPerDay" class="form-control task-field" type="number" min="0" max="24" placeholder="Preferred number working hours per day" />
+        </div>
+
+        <div class="modal-footer">
+            <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button class="btn btn-warning" ng-click="cancelSettings()">Cancel</button>
         </div>
     </form>
-
-    <div class="modal-footer">
-        <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
-        <button class="btn btn-primary" ng-click="submitSettings()">Submit</button>
-        <button class="btn btn-warning" ng-click="cancelSettings()">Cancel</button>
-    </div>
 </script>
 
 <script type="text/ng-template" id="notesDialogContent.html">

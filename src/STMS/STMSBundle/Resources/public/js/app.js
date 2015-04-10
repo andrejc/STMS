@@ -142,6 +142,7 @@
         $scope.newUser = {};
 
         $scope.login = function (user) {
+            $scope.loginError = false;
             $scope.isProcessingLogin = true;
 
             $http({
@@ -157,12 +158,13 @@
                     $window.location.href = "/app_dev.php";
                 }
                 else {
-                    // TODO: Display error
+                    $scope.loginError = data.messages[0];
                 }
             });
         };
 
         $scope.register = function (user) {
+            $scope.registrationError = false;
             $scope.isProcessingRegistration = true;
 
             $http({
@@ -178,7 +180,7 @@
                     $scope.login(user);
                 }
                 else {
-                    // TODO: Display error
+                    $scope.registrationError = data.messages[0];
                 }
             });
         };

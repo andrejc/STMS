@@ -24,7 +24,7 @@ get_user:
 
 set_hours:
   path: /user/setPreferredHours/{hours}
-  defaults: { _controller: STMSBundle:Settings:setPreferredHours }
+  defaults: { _controller: STMSBundle:Settings:setPreferredHours, hours: null }
   methods:  [POST, PUT]
 
 generate_sheet:

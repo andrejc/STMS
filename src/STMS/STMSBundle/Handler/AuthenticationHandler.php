@@ -53,6 +53,6 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
     {
         return new JsonResponse(array(
             "result" => "error",
-            "message" => "Invalid credentials"));
+            "messages" => array("Invalid email or password. Please try again.")));
     }
 }

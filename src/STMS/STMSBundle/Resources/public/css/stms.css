@@ -40,8 +40,13 @@
     width: 500px;
 }
 
-.task-form, .settings-form {
+.login-form, .register-form, .task-form, .settings-form {
     margin: 20px;
+}
+
+.login-error, .registration-error {
+    float: left;
+    max-width: 250px;
 }
 
 .task-field {
@@ -153,6 +158,12 @@
     vertical-align: middle;
 }
 
+.fa-exclamation-triangle {
+    color: orange;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
 .login-spinner {
     font-size: 30px;
     margin-right: 15px;
@@ -173,7 +184,6 @@
 
 .login-button {
     float: right;
-    margin-right: 5%;
     width: 135px;
 }
 

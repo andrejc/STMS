@@ -92,7 +92,7 @@ class TaskController extends Controller
         if (!$task) {
             return new JsonResponse(array(
                 "result" => "error",
-                "messages" => array("No task found for the given ID")));
+                "messages" => array("No task found for the given ID.")));
         }
 
         $normalizer = new GetSetMethodNormalizer();
@@ -155,7 +155,7 @@ class TaskController extends Controller
         if (!$task) {
             return new JsonResponse(array(
                 "result" => "error",
-                "message" => "No task found for the given ID"));
+                "message" => "No task found for the given ID."));
         }
 
         $form = $this->createEditForm($task);
@@ -191,7 +191,7 @@ class TaskController extends Controller
         if (!$task) {
             return new JsonResponse(array(
                 "result" => "error",
-                "message" => "No task found for the given ID"));
+                "message" => "No task found for the given ID."));
         }
 
         $em->remove($task);

@@ -19,10 +19,10 @@ class TaskType extends AbstractType
             ->add('name', 'text')
             ->add('date', 'date', array(
                 'widget' => 'single_text',
-                'invalid_message' => 'Invalid date provided')
+                'invalid_message' => 'Invalid date provided.')
             )
             ->add('minutes', 'integer', array(
-                'invalid_message' => 'Task duration must be an integer')
+                'invalid_message' => 'Task duration must be an integer.')
             )
             ->add('notes', 'textarea')
         ;
