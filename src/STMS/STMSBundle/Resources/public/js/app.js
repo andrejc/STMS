@@ -11,18 +11,13 @@
 
         $http.get('/user/getData').success(function (data) {
             $scope.user = data;
-        }).error(function (data) {
-            console.log('Error: ' + data);
         });
 
         $http.get('/task/list', {
             transformResponse: transformResponse
         }).success(function (data) {
             $scope.tasks = data;
-        })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
+        });
 
         $scope.displayTaskDialog = function (task) {
             var dialogInstance = $modal.open({
@@ -86,9 +81,6 @@
                 .success(function(data) {
                     if(data.result == "success") {
                         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
-                    }
-                    else {
-                        // TODO: Display error
                     }
                 });
         };

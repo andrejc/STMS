@@ -123,7 +123,7 @@
                     <li ng-repeat="task in dateTasks" ng-if="isDateInRange(task.date)" class="list-group-item">{[ task.name ]} <span class="task-duration">({[ task.minutes ]} minutes)</span>
                         <i class="fa-li fa fa-caret-right"></i>
                         <div class="task-options">
-                            <span ng-show="task.notes != null">
+                            <span ng-if="task.notes">
                             <i class="fa fa-paperclip list-icon"></i>
                             <a class="task-option" href="#" ng-click="displayNotesDialog(task)">View notes</a></span>
                             <i class="fa fa-pencil list-icon"></i>
