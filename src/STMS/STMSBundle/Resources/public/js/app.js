@@ -9,13 +9,13 @@
         $scope.startDate = null;
         $scope.endDate = null;
 
-        $http.get('/app_dev.php/user/getData').success(function (data) {
+        $http.get('/user/getData').success(function (data) {
             $scope.user = data;
         }).error(function (data) {
             console.log('Error: ' + data);
         });
 
-        $http.get('/app_dev.php/task/list', {
+        $http.get('/task/list', {
             transformResponse: transformResponse
         }).success(function (data) {
             $scope.tasks = data;
@@ -82,7 +82,7 @@
         };
 
         $scope.deleteTask = function(task) {
-            $http.delete('/app_dev.php/task/delete/' + task.id)
+            $http.delete('/task/delete/' + task.id)
                 .success(function(data) {
                     if(data.result == "success") {
                         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
@@ -94,9 +94,9 @@
         };
 
         $scope.logout = function() {
-            $http.get('/app_dev.php/logout')
+            $http.get('/logout')
                 .success(function() {
-                    $window.location.href = "app_dev.php/login";
+                    $window.location.href = "/login";
                 });
         };
 
@@ -147,7 +147,7 @@
 
             $http({
                 method: 'POST',
-                url: '/app_dev.php/login_check',
+                url: '/login_check',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: user,
                 transformRequest: transformRequest
@@ -155,7 +155,7 @@
                 $scope.isProcessingLogin = false;
 
                 if(data.result == "success") {
-                    $window.location.href = "/app_dev.php";
+                    $window.location.href = "/";
                 }
                 else {
                     $scope.loginError = data.messages[0];
@@ -169,7 +169,7 @@
 
             $http({
                 method: 'POST',
-                url: '/app_dev.php/register',
+                url: '/register',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: user,
                 transformRequest: transformRequest
@@ -179,6 +179,7 @@
                 }
                 else {
                     $scope.registrationError = data.messages[0];
+                    $scope.isProcessingRegistration = false;
                 }
             });
         };
@@ -210,7 +211,7 @@
             $scope.isProcessing = true;
             $http({
                 method: $scope.requestType == 'add' ? 'POST' : 'PUT',
-                url: $scope.requestType == 'add' ? '/app_dev.php/task/add' : '/app_dev.php/task/edit/' + task.id,
+                url: $scope.requestType == 'add' ? '/task/add' : '/task/edit/' + task.id,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: $scope.curTask,
                 transformRequest: transformTaskRequest
@@ -261,7 +262,7 @@
             $scope.isProcessing = true;
             $http({
                 method: 'PUT',
-                url: '/app_dev.php/user/setPreferredHours/' + $scope.user.preferredWorkingHoursPerDay,
+                url: '/user/setPreferredHours/' + $scope.user.preferredWorkingHoursPerDay,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
                 $scope.isProcessing = false;
