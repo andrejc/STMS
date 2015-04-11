@@ -174,8 +174,6 @@
                 data: user,
                 transformRequest: transformRequest
             }).success(function (data) {
-                $scope.isProcessingRegistration = false;
-
                 if(data.result == "success") {
                     $scope.login(user);
                 }
@@ -239,6 +237,10 @@
         function transformTaskRequest(task) {
             var request = [];
             for(var val in task) {
+                if(val == 'id') {
+                    continue;
+                }
+
                 var value = task[val];
 
                 if(value instanceof Date) {

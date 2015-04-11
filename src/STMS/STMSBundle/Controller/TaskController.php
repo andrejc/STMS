@@ -150,12 +150,19 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $user = $this->get('security.context')->getToken()->getUser();
         $task = $em->getRepository('STMSBundle:Task')->find($id);
 
         if (!$task) {
             return new JsonResponse(array(
                 "result" => "error",
                 "message" => "No task found for the given ID."));
+        }
+
+        if($user != $task->getUser()) {
+            return new JsonResponse(array(
+                "result" => "error",
+                "message" => "You are not authorized to perform this action."));
         }
 
         $form = $this->createEditForm($task);
@@ -192,6 +199,13 @@ class TaskController extends Controller
             return new JsonResponse(array(
                 "result" => "error",
                 "message" => "No task found for the given ID."));
+        }
+
+        $user = $this->get('security.context')->getToken()->getUser();
+        if($user != $task->getUser()) {
+            return new JsonResponse(array(
+                "result" => "error",
+                "message" => "You are not authorized to perform this action."));
         }
 
         $em->remove($task);
