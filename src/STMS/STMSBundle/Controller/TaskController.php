@@ -41,7 +41,10 @@ class TaskController extends Controller
 
         $json = $serializer->serialize($tasks, 'json');
 
-        return new Response($json);
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**
@@ -104,7 +107,10 @@ class TaskController extends Controller
         $serializer = new Serializer(array($normalizer), array(new JsonEncoder()));
         $json = $serializer->serialize($task, 'json');
 
-        return new Response($json);
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

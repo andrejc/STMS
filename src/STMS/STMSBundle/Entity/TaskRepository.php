@@ -5,6 +5,7 @@ namespace STMS\STMSBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 
 class TaskRepository extends EntityRepository {
+
     public function getTasksWithinDateRange($user, $startDate, $endDate) {
         $mQueryBuilder = $this->getEntityManager()->createQueryBuilder();
 
