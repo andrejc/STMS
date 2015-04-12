@@ -36,8 +36,8 @@
 
         <div class="modal-footer">
             <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
-            <button type="submit" class="btn btn-primary">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
-            <button class="btn btn-warning" ng-click="cancelTask()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-form">{[ requestType == 'add' ? 'Add' : 'Edit' ]}</button>
+            <button class="btn btn-warning btn-form" ng-click="cancelTask()">Cancel</button>
         </div>
     </form>
 </script>
@@ -55,8 +55,8 @@
 
         <div class="modal-footer">
             <i class="fa fa-spinner fa-pulse" ng-show="isProcessing"></i>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button class="btn btn-warning" ng-click="cancelSettings()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-form">Submit</button>
+            <button class="btn btn-warning btn-form" ng-click="cancelSettings()">Cancel</button>
         </div>
     </form>
 </script>

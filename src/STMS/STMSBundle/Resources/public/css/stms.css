@@ -57,7 +57,7 @@
 
 .date-field {
     display: inline-block;
-    width: 150px;
+    width: 155px;
     height: 30px;
 }
 
@@ -198,6 +198,10 @@
     vertical-align: middle;
     color: #777;
     margin-right: 8px;
+}
+
+.btn-form {
+    width: 100px;
 }
 
 .list-icon {
