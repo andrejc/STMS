@@ -160,6 +160,32 @@ class TaskControllerTest extends WebTestCase
         $this->assertTrue($taskEntity == null);
     }
 
+    public function testSetMinimumHours() {
+        $this->client->request('POST', '/user/setPreferredHours/8');
+
+        $response = $this->client->getResponse();
+
+        /*
+         * Check for successful result
+         */
+        $this->assertTrue(
+            $response->headers->contains(
+                'Content-Type',
+                'application/json'
+            )
+        );
+
+        $this->assertTrue($response->isSuccessful());
+        $taskData = json_decode($response->getContent());
+        $this->assertTrue($taskData->result == 'success');
+
+        /*
+         * Make sure that settings were actually updated
+         */
+        $userEntity = $this->em->getRepository('STMSBundle:User')->findOneById(1);
+        $this->assertTrue($userEntity->getPreferredWorkingHoursPerDay() == 8);
+    }
+
     /*
      * Create new session so that we can test actions that require authentication
      */
