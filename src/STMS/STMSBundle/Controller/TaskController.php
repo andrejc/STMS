@@ -50,11 +50,6 @@ class TaskController extends Controller
     /**
      * Generate HTML sheet with all tasks for the current user that are within given time range
      */
-
-    /**
-     * Lists all Task entities.
-     *
-     */
     public function generateSheetAction(Request $request)
     {
         $user = $this->get('security.context')->getToken()->getUser();
@@ -80,37 +75,6 @@ class TaskController extends Controller
         }
 
         return $this->render('STMSBundle:Default:sheet.html.twig', array('data' => $groupedTasks));
-    }
-
-    /**
-     * Finds and displays a Task entity.
-     *
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $task = $em->getRepository('STMSBundle:Task')->find($id);
-
-        if (!$task) {
-            return new JsonResponse(array(
-                "result" => "error",
-                "messages" => array("No task found for the given ID.")));
-        }
-
-        $normalizer = new GetSetMethodNormalizer();
-
-        $normalizer->setCallbacks(array('date' => function ($dateTime) {
-            return $dateTime->format("Y-m-d");
-        }));
-
-        $serializer = new Serializer(array($normalizer), array(new JsonEncoder()));
-        $json = $serializer->serialize($task, 'json');
-
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
     }
 
     /**

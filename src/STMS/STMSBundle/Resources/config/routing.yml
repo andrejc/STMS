@@ -35,10 +35,6 @@ task_list:
     path:     /task/list
     defaults: { _controller: "STMSBundle:Task:list" }
 
-task_show:
-    path:     /task/show/{id}
-    defaults: { _controller: "STMSBundle:Task:show" }
-
 task_add:
     path:     /task/add
     defaults: { _controller: "STMSBundle:Task:add" }
