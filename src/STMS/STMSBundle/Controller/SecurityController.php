@@ -40,7 +40,6 @@ class SecurityController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $data = $form->getData();
             $em = $this->getDoctrine()->getManager();
 
             $user->setPassword($this->encodePassword($user, $user->getPassword()));
